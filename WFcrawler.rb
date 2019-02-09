@@ -1,7 +1,11 @@
 require 'selenium-webdriver'
+require 'fileutils'
 driver = Selenium::WebDriver.for :chrome 
-driver.get("http://www.simtable.com/apps/fireProgression/output2011/MT_LCF_GE6Q_Taylor_Hills.html")
+site = ARGV
+driver.get(site[0])
 sleep(2)
+dir = driver.title()
+FileUtils.mkdir_p dir 
 driver.find_element(:id, "btnToBegining").click
 containerFrame = driver.find_element(:class => "ui-slider-track")
 width = containerFrame.size.width
@@ -13,4 +17,6 @@ while i < 100
 	sleep(0.5)
 	i += 1
 end
+dir="mv *.png " + dir.gsub(" ","\\ ")
+system(dir)
 exit
